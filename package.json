@@ -1,0 +1,35 @@
+{
+  "name": "techdegree-fullstackjs-rest-api",
+  "version": "1.0.0",
+  "description": "We've supplied the following files for you to use:",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./app.js",
+    "seed": "cross-env DB_ENABLE_LOGGING=true node './seed'"
+  },
+  "keywords": [],
+  "author": "Olivia Gaslin",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  },
+  "dependencies": {
+    "basic-auth": "^2.0.1",
+    "bcryptjs": "^2.4.3",
+    "cross-env": "^5.2.0",
+    "express": "^4.16.3",
+    "morgan": "^1.9.0",
+    "promise.prototype.finally": "^3.1.0",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0",
+    "sqlite3": "^4.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ojgaslin/techdegree-project-9.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ojgaslin/techdegree-project-9/issues"
+  },
+  "homepage": "https://github.com/ojgaslin/techdegree-project-9#readme"
+}
