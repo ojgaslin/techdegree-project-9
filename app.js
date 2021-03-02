@@ -4,9 +4,16 @@ var sequelize = require('./models/index').sequelize;
 const express = require('express');
 const morgan = require('morgan');
 var path = require('path');
+var routes = require('./routes/index');
+var users = require('./routes/users');
 
 // create the Express app
 const app = express();
+
+app.use(express.json());
+//setup routes
+app.use('/api', routes);
+app.use('/api/users', users);
 
 sequelize
   .authenticate()
@@ -38,23 +45,28 @@ app.get('/', (req, res) => {
   });
 });
 
-// send 404 if no other route matched
-app.use((req, res) => {
-  res.status(404).json({
-    message: 'Route Not Found',
-  });
-});
 
-// setup a global error handler
-app.use((err, req, res, next) => {
-  if (enableGlobalErrorLogging) {
-    console.error(`Global error handler: ${JSON.stringify(err.stack)}`);
-  }
-
-  res.status(err.status || 500).json({
-    message: err.message,
-    error: {},
+  // catch 404 and forward to error handler
+  app.use(function(req, res, next) {
+    var err = new Error('Page Not Found');
+    err.status = 404;
+    next(err);
   });
+  
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500).send(err);
+
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500).send();
 });
 
 // set our port
@@ -64,3 +76,5 @@ app.set('port', process.env.PORT || 5000);
 const server = app.listen(app.get('port'), () => {
   console.log(`Express server is listening on port ${server.address().port}`);
 });
+
+module.exports = app; 

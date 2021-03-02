@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,12 +12,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Course, { as: "courses",
+        foreignKey:{
+          fieldName: 'userId',
+          allowNull: false
+        }
+    });
+//       models.Course.belongsTo(User, {
+//          foreignKey: "userId",
+//          as: "user",
+// });
     }
   };
   User.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    email: DataTypes.STRING,
+    emailAddress: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
     sequelize,
