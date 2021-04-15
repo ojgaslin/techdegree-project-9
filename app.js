@@ -6,6 +6,7 @@ const morgan = require('morgan');
 var path = require('path');
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var courses = require('./routes/courses');
 
 // create the Express app
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 //setup routes
 app.use('/api', routes);
 app.use('/api/users', users);
+app.use('/api/courses', courses);
 
 sequelize
   .authenticate()
