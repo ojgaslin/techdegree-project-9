@@ -13,24 +13,35 @@ module.exports = (sequelize, DataTypes) => {
       Course.belongsTo(models.User, {
         foreignKey: "userId",
         as: "user",
-});
-      // define association here
+      });
     }
   };
   Course.init({
-    title: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    estimatedTime: {type:DataTypes.STRING, allowNull: true},
-    materialsNeeded: {type:DataTypes.STRING, allowNull: true},
-    userId: { 
-      type: DataTypes.INTEGER,
-      references:{
-        model:{
-           tableName: 'User'
-      }, 
-      key: 'id'
+    title: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: "Title is required" }
+      }
     },
-    allowNull: false
+    description: {
+      allowNull: false,
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: { msg: "Description is required" }
+      }
+    },
+    estimatedTime: { type: DataTypes.STRING, allowNull: true },
+    materialsNeeded: { type: DataTypes.STRING, allowNull: true },
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'User'
+        },
+        key: 'id'
+      },
+      allowNull: false
     }
   }, {
     sequelize,

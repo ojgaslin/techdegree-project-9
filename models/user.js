@@ -1,6 +1,7 @@
 'use strict';
 const {
-  Model
+  Model,
+  Sequelize
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -12,24 +13,46 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Course, { as: "courses",
-        foreignKey:{
+      User.hasMany(models.Course, {
+        as: "courses",
+        foreignKey: {
           fieldName: 'userId',
           allowNull: false
         }
-    });
-//       models.Course.belongsTo(User, {
-//          foreignKey: "userId",
-//          as: "user",
-// });
+      });
     }
   };
   User.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    emailAddress: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {
+    firstName: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: "First Name is required." }
+      }
+    },
+    lastName: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: "Last Name is required" }
+      }
+    },
+    emailAddress: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: "Email Address is required" }
+      }
+    },
+    password: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: "Password is required" }
+      }
+    }
+  },
+    {
     sequelize,
     modelName: 'User',
   });

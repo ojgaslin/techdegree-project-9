@@ -33,7 +33,7 @@ const authenticateUser = async(req, res, next) => {
  }
 //returns the current user
 router.get('/', authenticateUser, function(req, res, next) {
-    res.status(200).send({firstName:req.currentUser.firstName, lastName: req.currentUser.lastName, emailAddress:req.currentUser.emailAddress, createdAt: req.currentUser.createdAt, updatedAt: req.currentUser.updatedAt});
+    res.status(200).send({id: req.currentUser.id, firstName:req.currentUser.firstName, lastName: req.currentUser.lastName, emailAddress:req.currentUser.emailAddress});
 })
 //creating a new user accounts
 router.post('/', async(req, res, next) => {
@@ -55,9 +55,9 @@ router.post('/', async(req, res, next) => {
    }
    //putting user info into database
    User.create(user).then(function(user) {
-       res.status(201).location('/').end();
+       res.status(201).location('/').send({id:user.id}).end();
    }).catch(function(error) {
-    if(error.name === "SequelizeValidationError") {
+    if(error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
         res.status(400).send(error);
     } else {
         throw error;

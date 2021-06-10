@@ -50,7 +50,7 @@ router.post('/', authenticateUser, async(req, res, next) => {
  //putting course info into database
  console.log(req.body)
  Course.create(course).then(function(course) {
-     res.status(201).location('/api/courses/${course.id}').end();
+     res.status(201).location( '/api/courses/'+ course.id).end();
  }).catch(function(error) {
   if(error.name === "SequelizeValidationError") {
       res.status(400).send(error);
@@ -70,15 +70,16 @@ router.put('/:id', authenticateUser, function(req, res, next) {
        //*if course exists, return updated course
         if(req.currentUser.id == course.userId){
           course.update(req.body);
+          res.status(204);
         }else{
-          res.status(403).send();
+          res.status(403);
         }
         
      } else {
-       res.status(404).send();
+       res.status(404);
      }
    }).then(function(course){
-       res.send(204);      
+       res.send();      
    }).catch(function(error){
        //render edit form with errors
        if(error.name === "SequelizeValidationError") {
@@ -101,14 +102,15 @@ router.delete('/:id', authenticateUser, function(req, res, next) {
     if(course) {
       if(req.currentUser.id == course.userId){
         course.destroy();
+        res.status(204);
       }else{
-        res.status(403).send();
+        res.status(403);
       }
     } else {
-      res.send(404);
+      res.status(404);
     }
   }).then(function(){
-    res.send(204);    
+    res.send();    
   }).catch(function(error){
       res.send(500, error);
    });
