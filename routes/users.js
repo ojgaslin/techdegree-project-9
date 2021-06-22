@@ -55,7 +55,7 @@ router.post('/', async(req, res, next) => {
    }
    //putting user info into database
    User.create(user).then(function(user) {
-       res.status(201).location('/').send({id:user.id}).end();
+       res.status(201).location('/').end();
    }).catch(function(error) {
     if(error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
         res.status(400).send(error);
